@@ -1,0 +1,27 @@
+{
+  "name": "superstring.github.io",
+  "version": "1.0.0",
+  "description": "superstring's blog",
+  "main": "gulpfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/superstring/superstring.github.io.git"
+  },
+  "keywords": [
+    "blog"
+  ],
+  "author": "K.Arthur",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/superstring/superstring.github.io/issues"
+  },
+  "homepage": "https://github.com/superstring/superstring.github.io#readme",
+  "devDependencies": {
+    "gulp": "^4.0.2",
+    "gulp-rename": "^2.0.0",
+    "gulp-replace": "^1.0.0"
+  }
+}

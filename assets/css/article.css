@@ -1,0 +1,10 @@
+/* all */
+body {
+  width: 85vw;
+  margin: 0 auto;
+}
+
+/* article style */
+.article-title {
+  color: blue;
+}
