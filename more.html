@@ -23,12 +23,12 @@
 
     <script src="assets/js/util.js"></script>
     <script>
-      function addItem(title, url, summary) {
+      function addItem(title, url, summary, index) {
         summary = summary || 'no description';
         return `
             <div class="collapsible">
-                <input id="collapsible1" type="checkbox" name="collapsible" />
-                <label for="collapsible1"><a href="${url}">${title}</a></label>
+                <input id="collapsible${index}" type="checkbox" name="collapsible" />
+                <label for="collapsible${index}"><a href="${url}">${title}</a></label>
                 <div class="collapsible-body"><span>${summary}</span></div>
             </div>
         `;
@@ -41,8 +41,8 @@
           const blog = JSON.parse(data);
           if (type && blog[type]) {
             const $panel = document.querySelector('.list-panel');
-            blog[type].list.forEach(function(item) {
-              $panel.innerHTML += addItem(item.title, item.url, item.summary);
+            blog[type].list.forEach(function(item, index) {
+              $panel.innerHTML += addItem(item.title, item.url, item.summary, index);
             });
           }
         });

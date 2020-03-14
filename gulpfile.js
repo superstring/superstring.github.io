@@ -111,7 +111,7 @@ function getTitle(type) {
   return (
     type +
     '-' +
-    (option.title || `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`) +
+    (option.title || `${d.getFullYear()}_${d.getMonth() + 1}_${d.getDate()}`) +
     '-' +
     guid()
   );
@@ -167,10 +167,16 @@ function correct(filePath = '') {
     const type = basenameArray[0];
     const url = `./collection/${type}/${basename}`;
     const title = basenameArray[1];
-    const subtitle = 'NO SUBTITLE';
     const cover = getCover();
     const content = fs.readFileSync(filePath, { encoding: 'utf-8' });
-    const summary = content.substr(0, 50);
+    let subtitle = 'NO SUBTITLE';
+    if (content.match(/<h4 class="subtitle">(.*)<\/h4>/)) {
+      subtitle = content.match(/<h4 class="subtitle">(.*)<\/h4>/)[1];
+    }
+    let summary = 'NO SUMMARY';
+    if (content.match(/<p class="content">(.*)<\/p>/)) {
+      summary = content.match(/<p class="content">(.*)<\/p>/)[1].substr(0, 50);
+    }
     updateIndexJson(type, { title, subtitle, url, cover, summary });
   }
 }
