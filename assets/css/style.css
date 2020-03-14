@@ -4,32 +4,13 @@ body {
   margin: 0 auto;
 }
 
-/* container style */
-.blog {
-  margin-top: 1rem;
-}
-
-.blog-preview {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
-}
-
-.blog-preview > div {
-  width: 30%;
-}
-
-@media screen and (max-width: 35.5em) {
-  .blog-preview > div {
-    width: 100%;
-    margin-top: 1em;
-  }
-}
-
-.blog-preview a {
+a {
   background-image: none;
 }
 
-.more {
-  padding: 0 1em;
+.home {
+  position: fixed;
+  bottom: 2em;
+  right: 2em;
+  padding: .25em .5em;
 }

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <meta name="description" content="welcome to superstring's blog" />
+    <meta name="keywords" content="superstring, blog" />
+    <base href="./" />
+
+    <title>Superstring's Blog</title>
+    <link rel="shortcut icon" href="assets/moon.png" type="image/x-icon" />
+    <link
+      rel="stylesheet"
+      href="//unpkg.com/papercss@1.6.1/dist/paper.min.css"
+    />
+    <link rel="stylesheet" href="assets/css/style.css" />
+  </head>
+  <body>
+    <div class="list-panel"></div>
+
+    <a class="home border shadow shadow-hover" href="index.html">Home</a>
+
+    <script src="assets/js/util.js"></script>
+    <script>
+      function addItem(title, url, summary) {
+        summary = summary || 'no description';
+        return `
+            <div class="collapsible">
+                <input id="collapsible1" type="checkbox" name="collapsible" />
+                <label for="collapsible1"><a href="${url}">${title}</a></label>
+                <div class="collapsible-body"><span>${summary}</span></div>
+            </div>
+        `;
+      }
+
+      window.onload = function() {
+        this.simpleAjax('GET', 'index.json', null, function(data) {
+          const params = parseQueryParams();
+          const type = params.type;
+          const blog = JSON.parse(data);
+          if (type && blog[type]) {
+            const $panel = document.querySelector('.list-panel');
+            blog[type].list.forEach(function(item) {
+              $panel.innerHTML += addItem(item.title, item.url, item.summary);
+            });
+          }
+        });
+      };
+    </script>
+  </body>
+</html>

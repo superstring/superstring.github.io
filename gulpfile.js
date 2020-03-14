@@ -13,8 +13,8 @@ const option = {
   type: 'life',
   author: 'Superstring',
   date: '',
-  title: '',
-  subtitle: '',
+  title: 'NO TITLE',
+  subtitle: 'NO SUBTITLE',
   content: ''
 };
 (function() {
@@ -40,7 +40,10 @@ function readContent(filePath) {
   }
 }
 
-function updateIndexJson(type, info = { title, subtitle, url, cover }) {
+function updateIndexJson(
+  type,
+  info = { title, subtitle, url, cover, summary }
+) {
   fs.readFile(dataJson, 'utf-8', (err, data) => {
     const blog = JSON.parse(data);
     if (!blog[type]) {
@@ -48,14 +51,14 @@ function updateIndexJson(type, info = { title, subtitle, url, cover }) {
         card: [
           {
             cover: getCover(),
-            title: '',
-            subtitle: '',
+            title: 'PLACEHOLDER',
+            subtitle: 'NO SUBTITLE',
             url: ''
           },
           {
             cover: getCover(),
-            title: '',
-            subtitle: '',
+            title: 'PLACEHOLDER',
+            subtitle: 'NO SUBTITLE',
             url: ''
           }
         ],
@@ -129,14 +132,16 @@ function gtArticle() {
   const subtitle = option.subtitle;
   const cover = getCover();
   const fileName = getTitle(type);
+  const content = getContent();
+  const summary = content.substr(0, 50);
   const url = `collection/${type}/${fileName}.html`;
-  updateIndexJson('life', { url, title, subtitle, cover });
+  updateIndexJson(type, { url, title, subtitle, cover, summary });
   return src('template/article.html')
     .pipe(gReplace('_AUTHOR_', getAuthor()))
     .pipe(gReplace('_DATE_', getDate()))
     .pipe(gReplace('_TITLE_', title))
     .pipe(gReplace('_SUBTITLE_', subtitle))
-    .pipe(gReplace('_CONTENT_', getContent()))
+    .pipe(gReplace('_CONTENT_', content))
     .pipe(gRename(path => (path.basename = fileName)))
     .pipe(dest(`collection/${type}`));
 }
@@ -162,9 +167,11 @@ function correct(filePath = '') {
     const type = basenameArray[0];
     const url = `./collection/${type}/${basename}`;
     const title = basenameArray[1];
-    const subtitle = '';
+    const subtitle = 'NO SUBTITLE';
     const cover = getCover();
-    updateIndexJson(type, { title, subtitle, url, cover });
+    const content = fs.readFileSync(filePath, { encoding: 'utf-8' });
+    const summary = content.substr(0, 50);
+    updateIndexJson(type, { title, subtitle, url, cover, summary });
   }
 }
 function retrieveCollection(rootPath, callback) {

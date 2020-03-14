@@ -15,6 +15,7 @@
       href="//unpkg.com/papercss@1.6.1/dist/paper.min.css"
     />
     <link rel="stylesheet" href="assets/css/style.css" />
+    <link rel="stylesheet" href="assets/css/index.css" />
   </head>
   <body>
     <nav class="split-nav">
@@ -38,6 +39,70 @@
 
     <div class="blog"></div>
 
-    <script src="index.js"></script>
+    <script src="assets/js/util.js"></script>
+    <script>
+      function addCard(url, cover, title, subtitle) {
+        return `
+            <div class="card">
+                <img src="${cover}" alt="card image" />
+                <div class="card-body">
+                    <h4 class="card-title">${title}</h4>
+                    <h5 class="card-subtitle">${subtitle}</h5>
+                    <button><a href="${url}">Read More</a></button>
+                </div>
+            </div>
+        `;
+      }
+
+      function addListItem(title, url) {
+        return `<li><a href="${url}">${title}</a></li>`;
+      }
+
+      function addTopic(topic = '') {
+        return `        
+            <h3 class="topic title">
+            <span class="badge success"># ${topic.toUpperCase()}</span>
+            </h3>
+        `;
+      }
+
+      function addBlog(blog = {}) {
+        const $nav = document.querySelector('.collapsible-body > ul');
+        const $blog = document.querySelector('.blog');
+        for (let [type, topic] of Object.entries(blog)) {
+          // add nav
+          $nav.innerHTML += `<li><a href="#${type}">${capital(type)}</a></li>`;
+
+          // add blog
+          let $blogTopicStr = `<div class="blog-topic" id="${type}">`;
+          $blogTopicStr += addTopic(type);
+          $blogTopicStr += `<div class="blog-preview">`;
+          topic.card.forEach(function(card) {
+            $blogTopicStr += addCard(
+              card.url,
+              card.cover,
+              card.title,
+              card.subtitle
+            );
+          });
+          $listStr = `<div><a class="more border border-secondary shadow shadow-hover" href="./more.html?type=${type}">more</a><ul>`;
+          for (let i = 0; i < topic.list.length && i < 10; i++) {
+            const item = topic.list[i];
+            $listStr += `<li><a href="${item.url}">${item.title}</a></li>`;
+          }
+          $listStr += `</ul></div>`;
+          $blogTopicStr += $listStr;
+          $blogTopicStr += `</div></div>`;
+          $blog.innerHTML += $blogTopicStr;
+        }
+        $nav.innerHTML += `<li><a href="https://github.com/superstring">Github</a></li>`;
+      }
+
+      window.onload = function() {
+        this.simpleAjax('GET', 'index.json', null, function(data) {
+          addBlog(JSON.parse(data));
+        });
+      };
+    </script>
   </body>
 </html>
