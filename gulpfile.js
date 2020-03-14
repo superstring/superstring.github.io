@@ -148,7 +148,7 @@ function gtArticle() {
 
 // backup
 function gtBackup() {
-  return src('collection/*')
+  return src('collection/**/*')
     .pipe(gZip(`archive-${getDate()}.zip`))
     .pipe(dest('archive'));
 }
